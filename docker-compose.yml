@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # Redis 7 In-Memory Rate Limiter Store
+  redis:
+    image: redis:7-alpine
+    container_name: edge-gateway-redis
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: always
+
+  # MongoDB 7 Audit Log Store
+  mongodb:
+    image: mongo:7.0
+    container_name: edge-gateway-mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', 'db.adminCommand("ping")']
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: always
+
+  # Downstream Mock Microservices
+  mock-downstreams:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: edge-gateway-mock-services
+    command: ["npx", "tsx", "scripts/mock-downstream.ts"]
+    ports:
+      - '8001:8001'
+      - '8002:8002'
+      - '8003:8003'
+    restart: always
+
+  # Edge API Gateway Primary Service
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: edge-api-gateway
+    ports:
+      - '8000:8000'
+    environment:
+      - PORT=8000
+      - HOST=0.0.0.0
+      - NODE_ENV=production
+      - REDIS_URL=redis://redis:6379
+      - MONGO_URI=mongodb://mongodb:27017/edge_gateway_db
+      - JWT_SECRET=production_ultra_secure_secret_key_32_chars_min!
+    depends_on:
+      redis:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    restart: always
+
+volumes:
+  mongo-data:
