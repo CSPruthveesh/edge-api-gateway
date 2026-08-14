@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Redis 7 In-Memory Rate Limiter Store
   redis:
