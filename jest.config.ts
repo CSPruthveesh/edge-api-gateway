@@ -9,6 +9,7 @@ module.exports = {
   transform: {
     '^.+\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.json', isolatedModules: true }]
   },
+  transformIgnorePatterns: ['node_modules/(?!(http-proxy-middleware)/)'],
   moduleFileExtensions: ['ts', 'js', 'json', 'node'],
   verbose: true,
   forceExit: true,
