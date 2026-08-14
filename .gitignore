@@ -1,0 +1,23 @@
+# Node Modules & Build Artifacts
+node_modules/
+dist/
+build/
+*.log
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Testing & Coverage
+coverage/
+.jest/
+
+# IDE & OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
+
+# Docker volumes
+.docker-data/
