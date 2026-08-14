@@ -3,7 +3,9 @@ import helmet from 'helmet';
 import cors from 'cors';
 import loggerMiddleware from './middleware/logger.middleware.js';
 import errorMiddleware from './middleware/error.middleware.js';
+import authMiddleware from './middleware/auth.middleware.js';
 import healthRoutes from './routes/health.routes.js';
+import authRoutes from './routes/auth.routes.js';
 import { AppError, ErrorCode } from './constants/error-codes.js';
 
 export const createApp = (): Application => {
@@ -20,6 +22,15 @@ export const createApp = (): Application => {
 
   // Core API Routes
   app.use('/', healthRoutes);
+  app.use('/', authRoutes);
+
+  // Protected test endpoint for zero-trust auth verification
+  app.get('/api/v1/protected/me', authMiddleware, (req, res) => {
+    res.status(200).json({
+      success: true,
+      user: req.user
+    });
+  });
 
   // Catch-all 404 handler for undefined routes
   app.use((req, res, next) => {
@@ -33,3 +44,4 @@ export const createApp = (): Application => {
 };
 
 export default createApp;
+
