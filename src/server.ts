@@ -2,11 +2,14 @@ import http from 'http';
 import createApp from './app.js';
 import envConfig from './config/env.config.js';
 import logger from './utils/logger.js';
+import connectMongo from './config/mongo.config.js';
 
 const app = createApp();
 const server = http.createServer(app);
 
-const startServer = (): void => {
+const startServer = async (): Promise<void> => {
+  await connectMongo();
+
   server.listen(envConfig.PORT, envConfig.HOST, () => {
     logger.info(
       {
@@ -18,6 +21,7 @@ const startServer = (): void => {
     );
   });
 };
+
 
 const gracefulShutdown = (signal: string): void => {
   logger.info({ signal }, `Received ${signal}. Initiating graceful shutdown...`);
