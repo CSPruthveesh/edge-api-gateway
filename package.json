@@ -8,6 +8,8 @@
     "test": "tests"
   },
   "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
     "test": "jest",
     "load-test": "tsx scripts/load-test.ts"
   },
