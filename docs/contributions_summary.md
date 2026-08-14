@@ -49,7 +49,7 @@ By integrating stateless in-memory JWT authentication, atomic server-side Redis 
 
 ## 4. Final Curated Resume Section
 
-**Edge-Accelerated Dynamic API Gateway** | **Lead Software Engineer & System Architect**
+**Edge-Accelerated Dynamic API Gateway** | **High-Throughput Asynchronous Edge Proxy**
 - Architected an asynchronous multi-core Node.js API Gateway in TypeScript, sustaining **12,850+ requests per second** with **$p_{99}$ latency under 1.82ms** by implementing stateless zero-trust JWT verification and dynamic proxy routing.
 - Engineered a distributed Redis 7 rate limiter, achieving **100% race-condition-free throttling** across 100 concurrent HTTP connections by authoring atomic server-side SHA1-hashed Lua scripts (`ZADD`/`ZREMRANGEBYSCORE`).
 - Designed a non-blocking audit logging pipeline, eliminating **100% of logging-induced response latency** by hooking Express `res.on('finish')` events to a double-buffered in-memory queue flushed asynchronously via MongoDB `insertMany`.
