@@ -7,6 +7,7 @@ import authMiddleware from './middleware/auth.middleware.js';
 import rateLimiterMiddleware from './middleware/rate-limiter.middleware.js';
 import healthRoutes from './routes/health.routes.js';
 import authRoutes from './routes/auth.routes.js';
+import gatewayRoutes from './routes/gateway.routes.js';
 import { AppError, ErrorCode } from './constants/error-codes.js';
 
 export const createApp = (): Application => {
@@ -41,6 +42,9 @@ export const createApp = (): Application => {
     });
   });
 
+  // Dynamic Microservice Catch-All Gateway Router
+  app.use('/', gatewayRoutes);
+
   // Catch-all 404 handler for undefined routes
   app.use((req, res, next) => {
     next(new AppError(`Route ${req.method} ${req.originalUrl} not found`, 404, ErrorCode.NOT_FOUND));
@@ -53,5 +57,6 @@ export const createApp = (): Application => {
 };
 
 export default createApp;
+
 
 

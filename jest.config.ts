@@ -7,10 +7,10 @@ module.exports = {
     '^(\\.{1,2}/.*)\\.js$': '$1'
   },
   transform: {
-    '^.+\\.tsx?$': ['ts-jest', { tsconfig: 'tsconfig.json', isolatedModules: true }]
+    '^.+\\.[tj]sx?$|\\.mjs$': ['ts-jest', { tsconfig: 'tsconfig.json', isolatedModules: true }]
   },
-  transformIgnorePatterns: ['node_modules/(?!(http-proxy-middleware)/)'],
-  moduleFileExtensions: ['ts', 'js', 'json', 'node'],
+  transformIgnorePatterns: ['node_modules/(?!(http-proxy-middleware|httpxy|is-plain-obj)/)'],
+  moduleFileExtensions: ['ts', 'js', 'mjs', 'json', 'node'],
   verbose: true,
   forceExit: true,
   clearMocks: true,
